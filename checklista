@@ -1,0 +1,68 @@
+Steg 0: förberedelser
+
+✅ Projektmapp server-inventory-tool i Ubuntu, öppnad i VS Code
+✅ Git-repo startat på grenen main
+✅ .gitignore skapad
+✅ Ping testad för hand (exitkod 0 och 1)
+✅ servrar.json med startdatan (kör ls -a och kolla att den finns)
+✅ De fyra tomma Python-filerna (main.py, meny.py, lagring.py, kontroller.py)
+✅ Första commit
+
+Steg 1: lagring (lagring.py), du är här
+
+✅ hamta_filnamn() läser INVENTORY_DATAFIL med standardvärde (G6)
+✅ ladda_servrar() returnerar listan, och en tom lista om filen saknas (G5, G7)
+✅ spara_servrar(servrar) skriver listan till filen (G5)
+✅ Testat med en miljövariabel och med en fil som inte finns
+✅ Commit
+
+Steg 2: skriva ut servrar (G14)
+
+⬜ Funktion som tar en lista och skriver ut en tabell med kolumner i linje
+⬜ Funktion som filtrerar på miljö
+⬜ Commit
+
+Steg 3: lägga till och ta bort (G1 till G4, G13)
+
+⬜ Ny server är en dictionary med sex nycklar, status unknown
+⬜ Miljön kontrolleras (dev, test, prod) och frågan upprepas tills den är giltig
+⬜ Dubbletter av namn stoppas
+⬜ Ta bort fungerar, med extra bekräftelse för prod
+⬜ Ändringarna sparas direkt
+⬜ Commit
+
+Steg 4: kontroller (kontroller.py, G9, G10)
+
+⬜ Ping-funktion med subprocess.run(), kommandot som lista, exitkod avgör
+⬜ status och senast_kontrollerad uppdateras (format ÅÅÅÅ-MM-DD TT:MM)
+⬜ Commit
+
+Steg 5: CSV-export (G8)
+
+⬜ Fil i rapporter/ med datum och tid i namnet
+⬜ Katalogen skapas om den saknas
+⬜ Commit
+
+Steg 6: textmeny (meny.py, G11 till G14)
+
+⬜ Alla åtta menyvalen
+⬜ Ogiltiga val hanteras utan att programmet avslutas
+⬜ Commit
+
+Steg 7: kommandoraden (main.py, G15 till G17)
+
+⬜ --lista, --lista --miljo prod, --kontrollera NAMN, --kontrollera-alla, --export, --help
+⬜ Exitkoder rätt (0 eller 1)
+⬜ if __name__ == "__main__":
+⬜ Commit
+
+Steg 8: dokumentation (G18 till G20)
+
+⬜ README.md (omfattande)
+⬜ REDOGORELSE.md (alla sju frågor, med hänvisningar till din kod)
+
+Steg 9: slutkontroll
+
+⬜ Klona repot till en ny mapp och följ din egen README
+⬜ Repot är publikt eller jonasbjork är collaborator
+⬜ Inget __pycache__/ eller rapporter/ incheckat
