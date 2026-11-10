@@ -1,4 +1,4 @@
-from lagring import spara_servrar
+from lagring import spara_servrar, hitta_server
 
 MILJO_STATUS = ["dev", "test", "prod"] # Står utanför FunktionerNA så att alla kan använda den. Anledningen med stora bokstäver är att det är en konstant, dvs något som inte ska ändras.
 

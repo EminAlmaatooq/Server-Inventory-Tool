@@ -18,22 +18,22 @@ Steg 1: lagring (lagring.py), du är här
 
 Steg 2: skriva ut servrar (G14)
 
-⬜ Funktion som tar en lista och skriver ut en tabell med kolumner i linje
-⬜ Funktion som filtrerar på miljö
-⬜ Commit
+✅ Funktion som tar en lista och skriver ut en tabell med kolumner i linje
+✅ Funktion som filtrerar på miljö
+✅ Commit
 
 Steg 3: lägga till och ta bort (G1 till G4, G13)
 
-⬜ Ny server är en dictionary med sex nycklar, status unknown
-⬜ Miljön kontrolleras (dev, test, prod) och frågan upprepas tills den är giltig
-⬜ Dubbletter av namn stoppas
-⬜ Ta bort fungerar, med extra bekräftelse för prod
-⬜ Ändringarna sparas direkt
-⬜ Commit
+✅ Ny server är en dictionary med sex nycklar, status unknown
+✅ Miljön kontrolleras (dev, test, prod) och frågan upprepas tills den är giltig
+✅ Dubbletter av namn stoppas
+✅ Ta bort fungerar, med extra bekräftelse för prod
+✅ Ändringarna sparas direkt
+✅ Commit
 
 Steg 4: kontroller (kontroller.py, G9, G10)
 
-⬜ Ping-funktion med subprocess.run(), kommandot som lista, exitkod avgör
+✅ Ping-funktion med subprocess.run(), kommandot som lista, exitkod avgör
 ⬜ status och senast_kontrollerad uppdateras (format ÅÅÅÅ-MM-DD TT:MM)
 ⬜ Commit
 
