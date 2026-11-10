@@ -30,3 +30,13 @@ def spara_servrar(servrar):
     with open(fil, "w", encoding="utf-8") as f:
         # indent=2 ger snygg läsbar JSON, ensure_ascii=False behåller å, ä, ö
         json.dump(servrar, f, ensure_ascii=False, indent=2)
+
+
+def hitta_server(servrar, namn):
+    # Går igenom listan och returnerar servern om namnet matchar 
+    for server in servrar:
+        if server["namn"] == namn:
+            return server # return avslutar funktionen direkt
+
+    # Hit kommer vi bara om loopen aldrig hittade något
+    return None

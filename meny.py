@@ -33,16 +33,6 @@ def filtrera_miljo(servrar, miljo):
     return matchande_servrar
 
 
-def hitta_server(servrar, namn):
-    # Går igenom listan och returnerar servern om namnet matchar 
-    for server in servrar:
-        if server["namn"] == namn:
-            return server # return avslutar funktionen direkt
-
-    # Hit kommer vi bara om loopen aldrig hittade något
-    return None
-
-
 def lagg_till_server(servrar, namn, adress, miljo, roll):
     # Lägger till en ny server i listan och sparar.
 
