@@ -1,8 +1,11 @@
+# main.py
+# Programmets startpunkt.
+
 import argparse
 import sys
 from lagring import ladda_servrar
 from meny import kor_meny, visa_servrar, filtrera_miljo
-from kontroller import kontrollera_en
+from kontroller import kontrollera_en, kontrollera_alla
 
 
 def main():
@@ -18,6 +21,9 @@ def main():
 
     # --kontrollera tar ett värde (ett servernamn), samma som --miljo
     parser.add_argument("--kontrollera", help="Kontrollera en server med ping, t.ex. web01")
+
+    # --kontrollera-alla är av eller på, som --lista
+    parser.add_argument("--kontrollera-alla", action="store_true", help="Kontrollera alla servrar med ping")
 
     args = parser.parse_args()
 
