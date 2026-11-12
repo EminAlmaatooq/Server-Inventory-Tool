@@ -51,7 +51,7 @@ Steg 6: textmeny (meny.py, G11 till G14)
 
 Steg 7: kommandoraden (main.py, G15 till G17)
 
-⬜ --lista, --lista --miljo prod, --kontrollera NAMN, --kontrollera-alla, --export, --help
+✅  --lista, --lista --miljo prod, --kontrollera NAMN, --kontrollera-alla, --export, --help
 ⬜ Exitkoder rätt (0 eller 1)
 ⬜ if __name__ == "__main__":
 ⬜ Commit

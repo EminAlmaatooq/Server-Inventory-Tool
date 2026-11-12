@@ -1,8 +1,19 @@
 from meny import kor_meny
+import argparse
+from lagring import ladda_servrar, visa_servrar
+from meny import kor_meny, visa_servrar
 
 def main():
-    # Anropar funktionen som styr vad programmet gör när det startas.
-    kor_meny()
+    parser = argparse.ArgumentParser(description="Serverinventory tool")
+    
+    parser.add_argument("--lista", action="store_true", help="Visa alla servrar")
+    
+    args = parser.parse_args()
 
-if __name__ == "__main__": # Den här raden gör att main() bara körs när jag startar filen själv med python3 main.py
-    main()
+    if args.lista:
+        # Användaren skrev --lista, så vi visar alla servrar
+        servrar = ladda_servrar()
+        visa_servrar(servrar)
+    else:
+        # Ingen flagga, så vi startar menyn
+        kor_meny()
