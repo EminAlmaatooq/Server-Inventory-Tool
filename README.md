@@ -114,3 +114,43 @@ Du kan se exitkoden direkt efter ett kommando med:
 ```
 echo $?
 ```
+
+## Projektstruktur
+
+```
+server-inventory-tool/
+├── main.py          startpunkt, läser kommandoradsargument med argparse
+├── meny.py          textmenyn, utskrift av servrar och funktioner för att lägga till och ta bort
+├── lagring.py       läser och sparar JSON, och exporterar CSV
+├── kontroller.py    kontrollerar om servrar svarar på ping
+├── servrar.json     sparad data
+├── .gitignore
+├── README.md
+└── REDOGORELSE.md
+```
+
+Varje fil har ett tydligt ansvar:
+
+| Fil | Ansvar | Funktioner |
+|---|---|---|
+| `main.py` | Startar programmet. Läser flaggorna och väljer mellan menyn och kommandoraden. | `main` |
+| `meny.py` | Allt som användaren ser och svarar på, samt logiken för att lägga till och ta bort servrar. | `visa_meny`, `kor_meny`, `visa_servrar`, `filtrera_miljo`, `lagg_till_server`, `ta_bort_server`, `fraga_miljo`, `fraga_lagg_till`, `fraga_ta_bort` |
+| `lagring.py` | Sparar och läser data: JSON-filen, rapporterna och uppslag i listan. | `hamta_filnamn`, `ladda_servrar`, `spara_servrar`, `hitta_server`, `skapa_rapportsokvag`, `exportera_csv` |
+| `kontroller.py` | Kontrollerar servrar med ping och uppdaterar status och tidpunkt. | `svarar_pa_ping`, `hamta_tidsstampel`, `uppdatera_server`, `kontrollera_en`, `kontrollera_alla` |
+
+### Hur filerna hänger ihop
+
+- `main.py` använder `meny.py`, `lagring.py` och `kontroller.py`.
+- `meny.py` använder `lagring.py` och `kontroller.py`.
+- `kontroller.py` använder `lagring.py`.
+- `lagring.py` använder ingen av de andra filerna.
+
+Både textmenyn och kommandoraden använder samma funktioner för att läsa, spara och
+kontrollera servrar. Logiken är alltså skriven en gång och återanvänds. Till exempel finns
+kontrollen av en server bara i `kontroller.py`, och används av både menyval 5 och
+`--kontrollera`.
+
+Funktioner som gör själva jobbet (till exempel `lagg_till_server`) frågar aldrig
+användaren. Det är funktionerna som börjar på `fraga_` som använder `input()`. På så sätt
+kan kommandoraden använda jobbfunktionerna utan att programmet stannar och väntar på
+tangentbordet.
