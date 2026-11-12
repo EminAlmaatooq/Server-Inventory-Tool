@@ -1,7 +1,9 @@
 from lagring import spara_servrar, hitta_server, ladda_servrar, exportera_csv
 from kontroller import kontrollera_en, kontrollera_alla
 
+
 MILJO_STATUS = ["dev", "test", "prod"] # Står utanför FunktionerNA så att alla kan använda den. Anledningen med stora bokstäver är att det är en konstant, dvs något som inte ska ändras.
+
 
 def visa_servrar(servrar): 
     # Går igenom varje server i listan servrar.
@@ -72,6 +74,7 @@ def ta_bort_server(servrar, namn):
 
     return True
 
+
 def fraga_miljo():
     # fråga efter en miljö tills användaren skriver det.
     
@@ -82,6 +85,7 @@ def fraga_miljo():
             return miljo
 
         print(f"Felaktig miljö. Giltiga miljöer är: {', '.join(MILJO_STATUS)}")
+
 
 def fraga_lagg_till(servrar):
     
@@ -153,6 +157,7 @@ def kor_meny():# Huvudloopen: visar menyn, tar emot ett val och utför det tills
         visa_meny()
         
         val = input("Välj ett alternativ (1-8): ").strip()
+        
 
         # Val 1: visa alla servrar i en tabell
         if val == "1":

@@ -1,4 +1,5 @@
 import argparse
+import sys
 from lagring import ladda_servrar
 from meny import kor_meny, visa_servrar, filtrera_miljo
 from kontroller import kontrollera_en
@@ -12,10 +13,10 @@ def main():
     # --lista är av eller på: skriver man den visas servrarna
     parser.add_argument("--lista", action="store_true", help="Visa alla servrar")
 
-    # --miljo tar ett värde och är valfritt. Om det inte anges är args.miljo None.
+    # --miljo tar ett värde och är valfritt
     parser.add_argument("--miljo", help="Visa bara servrar i en miljö (dev, test eller prod)")
 
-    # --kontrollera tar ett värde (ett servernamn), precis som --miljo
+    # --kontrollera tar ett värde (ett servernamn), samma som --miljo
     parser.add_argument("--kontrollera", help="Kontrollera en server med ping, t.ex. web01")
 
     args = parser.parse_args()
@@ -45,8 +46,13 @@ def main():
 
         if server is None:
             print(f"Servern {args.kontrollera} finns inte.")
-        else:
-            print(f"{server['namn']}: {server['status']}")
+            sys.exit(1)  # exitkod 1: servern finns inte
+
+        print(f"{server['namn']}: {server['status']}")
+
+        if server["status"] == "down":
+            sys.exit(1)  # exitkod 1: servern är nere
+        # Kommer vi hit utan sys.exit() blir exitkoden 0
 
     else:
         # Användaren skrev inget så menyn körs
