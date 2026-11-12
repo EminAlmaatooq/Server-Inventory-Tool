@@ -1,6 +1,3 @@
-# main.py
-# Programmets startpunkt.
-
 import argparse
 import sys
 from lagring import ladda_servrar
@@ -59,6 +56,21 @@ def main():
         if server["status"] == "down":
             sys.exit(1)  # exitkod 1: servern är nere
         # Kommer vi hit utan sys.exit() blir exitkoden 0
+
+    elif args.kontrollera_alla:  # bindestrecket i flaggan blir understreck i koden
+        # om man kör programmet med --kontrollera-alla så pingas alla servrar
+        servrar = ladda_servrar()
+
+        # kontrollera_alla pingar alla, sparar en gång och returnerar antalet som är nere
+        antal_nere = kontrollera_alla(servrar)
+
+        # Visar tabellen så att man ser status för varje server
+        visa_servrar(servrar)
+        print(f"Antal servrar som är nere: {antal_nere}")
+
+        if antal_nere > 0:
+            sys.exit(1)  # exitkod 1: minst en server är nere
+        # Vi kommer vi hit utan sys.exit() och exitkoden blir 0
 
     else:
         # Användaren skrev inget så menyn körs
