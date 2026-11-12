@@ -1,6 +1,5 @@
-from meny import kor_meny
 import argparse
-from lagring import ladda_servrar, visa_servrar
+from lagring import ladda_servrar
 from meny import kor_meny, visa_servrar
 
 def main():
