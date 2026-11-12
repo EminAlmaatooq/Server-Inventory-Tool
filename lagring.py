@@ -47,7 +47,7 @@ def skapa_rapportsokvag():
     # Returnerar sökvägen till rapportfilen
 
     katalog = Path("rapporter")
-    katalog.mkdir(exist_ok=True) katalog.mkdir(exist_ok=True)  # skapar mappen, och om den redan finns blir det inget fel
+    katalog.mkdir(exist_ok=True)  # skapar mappen, och om den redan finns blir det inget fel
 
     tiden = datetime.now().strftime("%Y-%m-%d_%H%M") #Hämtar nuvarande tid från datorn och formaterar den som text, t.ex. "2026-11-10_1430"
     filnamn = f"inventering_{tiden}.csv" #Bygger namnet på filen med tiden i namnet.

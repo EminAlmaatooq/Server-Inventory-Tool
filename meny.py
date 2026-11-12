@@ -155,7 +155,7 @@ def kor_meny():# Huvudloopen: visar menyn, tar emot ett val och utför det tills
         val = input("Välj ett alternativ (1-8): ").strip()
 
         # Val 1: visa alla servrar i en tabell
-        elif val == "1":
+        if val == "1":
             visa_servrar(servrar)
 
         # Val 2: fråga efter miljö, ta fram de servrar som ligger där och visa dem
@@ -196,7 +196,7 @@ def kor_meny():# Huvudloopen: visar menyn, tar emot ett val och utför det tills
             print(f"Rapporten har exporterats till {sokvag}")
 
         # Val 8: avsluta. return stoppar funktionen och därmed loopen.
-        if val == "8":
+        elif val == "8":
             print("Avslutar programmet.")
             return
 
