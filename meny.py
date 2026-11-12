@@ -122,3 +122,19 @@ def fraga_ta_bort(servrar):
         print(f"Servern {namn_pa_server} har tagits bort.")
     else:
         print(f"Det gick inte att ta bort servern {namn_pa_server}.")
+
+
+def visa_meny():
+    # Skriver ut menyvalen
+
+    print()
+    print("=== Server Inventory Tool ===")
+    print("1. Visa alla servrar")
+    print("2. Visa servrar i en viss miljö")
+    print("3. Lägg till server")
+    print("4. Ta bort server")
+    print("5. Kontrollera en server")
+    print("6. Kontrollera alla servrar")
+    print("7. Exportera rapport som CSV")
+    print("8. Avsluta")
+    print("=============================")
