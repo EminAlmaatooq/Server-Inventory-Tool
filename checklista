@@ -34,20 +34,20 @@ Steg 3: lägga till och ta bort (G1 till G4, G13)
 Steg 4: kontroller (kontroller.py, G9, G10)
 
 ✅ Ping-funktion med subprocess.run(), kommandot som lista, exitkod avgör
-⬜ status och senast_kontrollerad uppdateras (format ÅÅÅÅ-MM-DD TT:MM)
-⬜ Commit
+✅ status och senast_kontrollerad uppdateras (format ÅÅÅÅ-MM-DD TT:MM)
+✅ Commit
 
 Steg 5: CSV-export (G8)
 
-⬜ Fil i rapporter/ med datum och tid i namnet
-⬜ Katalogen skapas om den saknas
-⬜ Commit
+✅ Fil i rapporter/ med datum och tid i namnet
+✅ Katalogen skapas om den saknas
+✅ Commit
 
 Steg 6: textmeny (meny.py, G11 till G14)
 
-⬜ Alla åtta menyvalen
-⬜ Ogiltiga val hanteras utan att programmet avslutas
-⬜ Commit
+✅ Alla åtta menyvalen
+✅ Ogiltiga val hanteras utan att programmet avslutas
+✅ Commit
 
 Steg 7: kommandoraden (main.py, G15 till G17)
 
