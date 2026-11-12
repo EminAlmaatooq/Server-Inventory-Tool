@@ -49,12 +49,14 @@ Steg 6: textmeny (meny.py, G11 till G14)
 ✅ Ogiltiga val hanteras utan att programmet avslutas
 ✅ Commit
 
-Steg 7: kommandoraden (main.py, G15 till G17)
+Steg 7: kommandoraden (G15, G16, G17)
 
-✅  --lista, --lista --miljo prod, --kontrollera NAMN, --kontrollera-alla, --export, --help
-✅  Main() startar menyn, med if __name__ == "__main__": (G17)
-✅  Argparse med --lista och --help (första delen av G15)
-
+✅ 7a: main() och if __name__ == "__main__":
+✅ 7b: --lista och --help
+✅ 7c: --lista --miljo prod
+✅ 7d: --kontrollera NAMN med exitkod
+⬜ 7e: --kontrollera-alla med exitkod
+⬜ 7f: --export
 Steg 8: dokumentation (G18 till G20)
 
 ⬜ README.md (omfattande)

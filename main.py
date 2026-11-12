@@ -1,6 +1,6 @@
 import argparse
 import sys
-from lagring import ladda_servrar
+from lagring import ladda_servrar, exportera_csv
 from meny import kor_meny, visa_servrar, filtrera_miljo
 from kontroller import kontrollera_en, kontrollera_alla
 
@@ -21,6 +21,9 @@ def main():
 
     # --kontrollera-alla är av eller på, som --lista
     parser.add_argument("--kontrollera-alla", action="store_true", help="Kontrollera alla servrar med ping")
+
+    # --export är av eller på, som --lista
+    parser.add_argument("--export", action="store_true", help="Exportera alla servrar till en CSV-rapport")
 
     args = parser.parse_args()
 
@@ -69,8 +72,16 @@ def main():
         print(f"Antal servrar som är nere: {antal_nere}")
 
         if antal_nere > 0:
-            sys.exit(1)  # exitkod 1: minst en server är nere
-        # Vi kommer vi hit utan sys.exit() och exitkoden blir 0
+            sys.exit(1)  # exitkod 1: minst en server är nere annars blir exitkoden 0
+
+    elif args.export:
+        # om man kör programmet med --export så skapas en CSV-rapport direkt
+        servrar = ladda_servrar()
+
+        # exportera_csv skriver filen och returnerar sökvägen till den
+        sokvag = exportera_csv(servrar)
+        print(f"Rapporten har exporterats till {sokvag}")
+        # Inget sys.exit() behövs, så exitkoden blir 0
 
     else:
         # Användaren skrev inget så menyn körs
