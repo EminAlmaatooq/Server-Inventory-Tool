@@ -1,6 +1,6 @@
 import subprocess
 from datetime import datetime
-from lagring import spara_servrar
+from lagring import spara_servrar, hitta_server
 
 def svarar_pa_ping(adress):
     # Pingar adressen och returnerar True om den svarar, annars False.
@@ -48,3 +48,17 @@ def kontrollera_alla(servrar):
     
     spara_servrar(servrar)
     return antal_nere
+
+
+def kontrollera_en(servrar, namn):
+    # Kontrollerar en server på namn och sparar.
+    server = hitta_server(servrar, namn)
+   
+    if not server:
+        return None
+    
+    uppdatera_server(server)
+    
+    spara_servrar(servrar)
+
+    return server
