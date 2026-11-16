@@ -105,4 +105,4 @@ Innan en server i prod tas bort frågar programmet om bekräftelse. Det minskar 
 
 
 ## 7. Källor och hjälpmedel
-Jag har använt Claude för att förstå begrepp och strukturera uppgiften. Jag har också använt lärarens PowerPoint-presentationer och uppgifter samt YouTube-tutorials från Bro Code.
+Jag har använt Claude för att förstå begrepp, strukturera uppgiften och felsökning. Jag har också använt lärarens PowerPoint-presentationer och uppgifter samt YouTube-tutorials från Bro Code.
