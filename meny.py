@@ -2,12 +2,11 @@ from lagring import spara_servrar, hitta_server, ladda_servrar, exportera_csv
 from kontroller import kontrollera_en, kontrollera_alla
 
 
-MILJO_STATUS = ["dev", "test", "prod"] # Står utanför FunktionerNA så att alla kan använda den. Anledningen med stora bokstäver är att det är en konstant, dvs något som inte ska ändras.
+MILJO_STATUS = ["dev", "test", "prod"] # Står utanför Funktionerna så att alla kan använda den. Stora bokstäver är att det är en konstant, då något som inte ska ändras.¨
 
 
-def visa_servrar(servrar): 
-    # Går igenom varje server i listan servrar.
-    # Parametern "servrar" är listan som ska skrivas ut. Inget returneras.
+# Går igenom varje server i listan servrar. Parametern "servrar" är listan som ska skrivas ut. Inget returneras.
+def visa_servrar(servrar):
 
     if not servrar:
         print("Inga servrar att visa.")
@@ -15,38 +14,35 @@ def visa_servrar(servrar):
 
     print(f"{'Namn':<15} {'Adress':<15} {'Miljö':<6} {'Roll':<18} {'Status':<9}")
 
-
-    for server in servrar:
-        print(f"{server['namn']:<15} {server['adress']:<15} {server['miljo']:<6} {server['roll']:<18} {server['status']:<9}") 
-       # Varje kolumn får en fast bredd med :<bredd, så att kolumnerna ska hamna under varandra.
+    for server in servrar: # går igenom varje server och skriver ut den
+        print(f"{server['namn']:<15} {server['adress']:<15} {server['miljo']:<6} {server['roll']:<18} {server['status']:<9}") # skriver ut serverns namn, adress, miljö, roll och status där < och en siffra bestämmer bredden på kolumnen.
 
 
+# En funktion som filtrerar servrar efter miljö (servrar, miljo) och skapar en tom lista som vi ska lägga till matchande servrar i [].
+# Först så går igenom varje server i listan och Kollar om server tillhör den miljö som vi söker efter.
+# Därefter jämför vi om serverns miljö är lika med den vi söker, sedan lägger vi till den i listan längst ner genom append().
 
 def filtrera_miljo(servrar, miljo):
-    # Returnerar en ny lista med bara de servrar som finns i den valda miljön.
-    # Tom lista där vi samlar de servrar som matchar
-
     matchande_servrar = []
+    for server in servrar:  
 
-    for server in servrar:  # Går igenom varje server i listan
-        if server["miljo"] == miljo:
-            matchande_servrar.append(server) # jämför om serverns miljö är lika med den vi söker sedan lägger vi till den i listan längst ner
+        if server["miljo"] == miljo: 
+            matchande_servrar.append(server) 
 
-    # Skickar tillbaka den nya listan.
-    return matchande_servrar
+    return matchande_servrar 
 
-
+# Skapar funktionen lagg_till_server(), som får serverlistan och den nya serverns namn, adress, miljö och roll.
+# Först så sparar vi svaret i variabeln server_finns, som kollar om servern redan finns i listan genom att anropa hitta_server() med (servrar och namn).
+# Om servern redan finns avbryter vi och returnerar False.
+# Om servern inte finns, skapar vi en ny dictionary med serverdata och lägger till den i listan med append() och sparar listan med spara_servrar(). Returnerar True om servern lades till.
 def lagg_till_server(servrar, namn, adress, miljo, roll):
-    # Lägger till en ny server i listan och sparar.
 
-    server_finns = hitta_server(servrar, namn)  # Sparar svaret i variabeln
+    server_finns = hitta_server(servrar, namn) 
 
-    # Om servern redan finns avbryter vi
     if server_finns:
         return False
 
-    # Bygger en dictionary med serverdata. Nycklarna är de som vi använder i övriga funktioner.
-    ny_server = {
+    ny_server = { # Dictionary med serverdata
         "namn": namn,
         "adress": adress,
         "miljo": miljo,
@@ -55,31 +51,33 @@ def lagg_till_server(servrar, namn, adress, miljo, roll):
         "senast_kontrollerad": "",
     }
 
-    servrar.append(ny_server)  # Lägger till den nya servern i listan
-    spara_servrar(servrar)  # Sparar listan med servrar till filen
-
+    servrar.append(ny_server)
+    spara_servrar(servrar)
+    
     return True
 
-
+# Skapar funktionen ta_bort_server() som tar bort servern med det angivna namnet från listan
+# Det vi börjar med är att spara svaret i variabeln hitta och om servern inte finns avbryter vi
+# Sedan  viTar bort servern från listan och sparar den uppdaterade listan i filen.
 def ta_bort_server(servrar, namn):
-    # Tar bort servern med det namnet och sparar.
-    # Returnerar True om den togs bort, False om den inte fanns.
-    hitta = hitta_server(servrar, namn)  # Sparar svaret i variabeln
+    
+    hitta = hitta_server(servrar, namn) 
 
-    if hitta is None:  # Om servern inte finns avbryter vi
+    if hitta is None:
         return False
 
-    servrar.remove(hitta)  # Tar bort servern från listan
-    spara_servrar(servrar)  # Sparar listan med servrar till filen
+    servrar.remove(hitta)  
+    spara_servrar(servrar)
 
     return True
 
-
+# Skapar funktionen fraga_miljo som Frågar efter en giltig miljö
+# Vi börjar med att skapa en while loop som är true, och anledningen är för att vi till att den fortsätter fråga tills miljön är giltig
+# if satsen kollar om miljön är giltig, ifall den är det så returenrar den miljön och visar giltiga miljoer.
 def fraga_miljo():
-    # fråga efter en miljö tills användaren skriver det.
     
     while True:
-        miljo = input("Ange miljö (dev, test, prod): ").strip().lower() # tar bort mellanslag och gör om till små bokstäver
+        miljo = input("Ange miljö (dev, test, prod): ").strip().lower() # tar bort mellanslag och gör om till små bokstäver (strip och lower)
 
         if miljo in MILJO_STATUS:
             return miljo
@@ -87,13 +85,18 @@ def fraga_miljo():
         print(f"Felaktig miljö. Giltiga miljöer är: {', '.join(MILJO_STATUS)}")
 
 
+# Skapar Funktion Fraga_lagg_till där vi frågar efter uppgifter och lägger till en server
+# Vi gör en så kallad "inmatning" genom input() frågar vi först server namn, adress och roll.
+# Nästa steg är att vi frågar efter en giltig miljö och därefter försöker lägga till servern
+# Om server blev inlagd, så skriver vi ut success!, annars ett felmeddelande att servern redan finns.
+
 def fraga_lagg_till(servrar):
     
     namn = input("Server namn: ")
     adress = input("Server adress: ")
     roll = input("Server roll: ")
 
-    miljo = fraga_miljo() # Frågar tills miljön är giltig
+    miljo = fraga_miljo() # är miljön giltig?
 
     hittade_servern = lagg_till_server(servrar, namn, adress, miljo, roll)
 
@@ -103,25 +106,31 @@ def fraga_lagg_till(servrar):
     else:
         print(f"Det finns redan en server med namnet {namn}.")
 
-        
-        
+
+# Skapar funktionen fraga_ta_bort som frågar vilken server som ska tas bort
+# Genom input vill vi läsa in servern namnet som ska tas bort där strip tar bort whitespace
+# Sedan letar vi efter server i listan och om servern INTE finns så avbryter vi
+# Om den finns i miljön, då i prod, ställer vi en kontroll/säkerthetsfråga där om man inte trycker ja så avbryter vi funktionen.
 def fraga_ta_bort(servrar):
-    # fråga vilken server som ska bort och anropa ta_bort_server().
     namn_pa_server = input("Vilken server vill du ta bort? ").strip()
 
-    server = hitta_server(servrar, namn_pa_server)
+    server = hitta_server(servrar, namn_pa_server) # Vart är servern?
 
-    if server is None:
+    if server is None: 
             print(f"Servern {namn_pa_server} finns inte. Avbryter.")
             return
 
-    if server["miljo"] == "prod": # servrar i prod kräver en extra bekräftelse
-        bekraftelse = input("Servern ligger i 'prod'. Är du säker på att du vill ta bort den? (ja/nej): ").strip().lower()
+    if server["miljo"] == "prod": # Finns server i prod?
+        bekraftelse = input("Servern ligger i 'prod'. Är du säker på att du vill ta bort den? (ja/nej): ").strip().lower() #kontroll/säkerhetsfråga
+
         if bekraftelse != "ja":
             print("Avbryter borttagning.")
+
             return
 
-    # Hit kommer vi bara om servern finns och, för prod, är bekräftad                
+    # Hit kommer vi bara om servern finns      
+    # Finns den så försöker vi ta bort den och printar ut reslutat
+    # Antigen att den lyckades eller ej.          
     ta_bort_resultat = ta_bort_server(servrar, namn_pa_server)
     if ta_bort_resultat:
         print(f"Servern {namn_pa_server} har tagits bort.")
@@ -129,8 +138,8 @@ def fraga_ta_bort(servrar):
         print(f"Det gick inte att ta bort servern {namn_pa_server}.")
 
 
+# Skapar en funktion som skriver ut menyvalen
 def visa_meny():
-    # Skriver ut menyvalen
 
     print()
     print("=== Server Inventory Tool ===")
@@ -145,66 +154,64 @@ def visa_meny():
     print("=============================")
 
 
-def kor_meny():# Huvudloopen: visar menyn, tar emot ett val och utför det tills användaren avslutar.
-
-    # Läser in servrarna från filen innan loopen börjar
+# Skapar en funktion där vi kör programmet meny
+# Först vi läser vi in servarna från filen
+# därefter gör vi en till while-loop där vi till visa menyn om igen tills vi avslutar
+# Sedan genom input vill vi att man ska skriva ut vilken menyval.
+def kor_meny():
     servrar = ladda_servrar()
 
-    # while True upprepar koden tills vi avslutar med return
     while True:
 
-        # Skriver ut menyn varje varv
         visa_meny()
         
         val = input("Välj ett alternativ (1-8): ").strip()
         
-
-        # Val 1: visa alla servrar i en tabell
+       # Val 1: visar alla servrar
         if val == "1":
             visa_servrar(servrar)
 
-        # Val 2: fråga efter miljö, ta fram de servrar som ligger där och visa dem
+       # Val 2: filtrerar och visar servrar i en vald miljö
         elif val == "2":
             miljo = fraga_miljo()
             filtrerade_servrar = filtrera_miljo(servrar, miljo)
             visa_servrar(filtrerade_servrar)
 
-        # Val 3: fråga användaren efter uppgifterna och lägg till en ny server
+        # Val 3: frågar efter uppgifter och lägger till en server
         elif val == "3":
             fraga_lagg_till(servrar)
 
-        # Val 4: fråga vilken server som ska bort och ta bort den
+        # Val 4: frågar vilken server som ska tas bort
         elif val == "4":
             fraga_ta_bort(servrar)
 
-        # Val 5: kontrollera en server med ping
+        # Val 5: frågar efter en server och kontrollerar den med ping
         elif val == "5":
             namn = input("Ange servernamn att kontrollera: ").strip()
 
-            # kontrollera_en ger tillbaka servern om den finns, annars None
             server = kontrollera_en(servrar, namn)
 
             if server is None:
                 print(f"Servern {namn} finns inte.")
             else:
-                # Visar om servern svarade (up) eller inte (down)
+                
                 print(f"Servern {namn} har kontrollerats. Status: {server['status']}")
 
-        # Val 6: kontrollera alla servrar och räkna hur många som är nere
+        # Val 6: kontrollerar alla servrar
         elif val == "6":
             antal_nere = kontrollera_alla(servrar)
             print(f"Alla servrar har kontrollerats. Antal servrar som är nere: {antal_nere}")
 
-        # Val 7: spara en CSV-rapport och skriv ut var den hamnade
+        # Val 7: skapar en CSV-rapport
         elif val == "7":
             sokvag = exportera_csv(servrar)
             print(f"Rapporten har exporterats till {sokvag}")
 
-        # Val 8: avsluta. return stoppar funktionen och därmed loopen.
+        # Val 8: avslutar programmet
         elif val == "8":
             print("Avslutar programmet.")
             return
 
-        # Allt annat är ett ogiltigt val, och då visas menyn igen
+        # Meddelar om man skriver ett annat val än 1–8
         else:
             print("Ogiltigt val, välj 1-8.")

@@ -2,28 +2,34 @@ import subprocess
 from datetime import datetime
 from lagring import spara_servrar, hitta_server
 
+
+# Skapar funktionen svarar_pa_ping som kontrollerar om en adress svarar
+# Vi kör ping mot adressen
+# Sparar ping-kommandots utkrift
+# Till sist retunerar True om ping lyckades, annars False
 def svarar_pa_ping(adress):
-    # Pingar adressen och returnerar True om den svarar, annars False.
-    # -c 1 = ett paket, -W 2 = vänta högst 2 sekunder på svar.
-    # capture_output=True fångar ping-texten så att den inte skrivs ut.
     resultat = subprocess.run(
         ["ping", "-c", "1", "-W", "2", adress],
         capture_output=True,
     )
 
-    # Exitkod 0 betyder att servern svarade
     return resultat.returncode == 0
 
-
+# Skapar funktionen hamta_tidsstampel som hämtar aktuell tid och datum från datorn
+# Sist så gör vi om tiden till text i formatet år=Y månad=m dag=d timme=H:minut=M
 def hamta_tidsstampel():
-    # Returnerar aktuell tid som text, t.ex. "2026-11-10 14:30"
     nu = datetime.now()
+
     return nu.strftime("%Y-%m-%d %H:%M")
 
 
+# Skapar funktionen uppdatera_server som tar emot en server och uppdaterar status och tid för senaste kontroll.
+# Först så hämtar vi servern adress
+# Vi kontrollerar om servern svara på ping 
+# svara den så sparar statusen som up annars som down.
+# Sist så hämtar vi aktuell tid genom hamta_tidsstampel,
+# och sedan sparar den tiden i serverns så programmet kan visa när servern var senaste kontrollerad.
 def uppdatera_server(server):
-    # Pingar en server och uppdaterar status och senast_kontrollerad.
-    # Ändrar dictionaryn direkt, så ingen return behövs. Sparar inte till filen.
     adress = server["adress"]
 
     if svarar_pa_ping(adress):
@@ -31,13 +37,15 @@ def uppdatera_server(server):
     else:
         server["status"] = "down"
 
-    # Utanför if/else, så att tidsstämpeln sätts varje gång servern kontrolleras (G10)
     server["senast_kontrollerad"] = hamta_tidsstampel()
 
 
+# Skapar funktionen kontrollera_alla som tar emot listan med servrar som ska kontrolleras.
+# Vi börjar räkningen med 0
+# Vi går igenom varje servern och kontrollerar servern och uppdaterar statusen på de
+# Om servern inte svarar ökar vi antalet srvrar som är nere med ett
+# sedan sparar vi de nya uppdaterade server uppgifterna och skickar tillbaka antal servern som är nere
 def kontrollera_alla(servrar):
-    # Kontrollerar alla servrar, sparar en gång och returnerar antalet som är nere.
-
     antal_nere = 0
     
     for server in servrar:
@@ -50,9 +58,13 @@ def kontrollera_alla(servrar):
     return antal_nere
 
 
+# skapar funktionen kontrollera_en som tar emot serverlistan och namnet på servern som ska kontrolleras.
+# Först så söker vi efter servern i listan
+# gör en if sats om servern inte hittas så avslutas funktionen och visar då att servern saknas
+# sedan kontrollerar vi servern och uppdaterar statusen och sparar den uppdaterade serverlistan Listan sparas i JSON-filen som anges av INVENTORY_DATAFIL
+# Till sist så skickar vi tillbaka servern med den nya statusen
 def kontrollera_en(servrar, namn):
-    # Kontrollerar en server på namn och sparar.
-    server = hitta_server(servrar, namn)
+    server = hitta_server(servrar, namn) # Sökning
    
     if not server:
         return None

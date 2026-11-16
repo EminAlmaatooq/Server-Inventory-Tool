@@ -4,90 +4,88 @@ from lagring import ladda_servrar, exportera_csv
 from meny import kor_meny, visa_servrar, filtrera_miljo
 from kontroller import kontrollera_en, kontrollera_alla
 
+# skapar funktionen main(), som innehåller programmets huvuddel och styr vilket kommando som ska köras.
+def main(): 
 
-def main():
+    parser = argparse.ArgumentParser(description="Serverinventory tool")  # Skapar parsern som läser vad användaren skriver efter python3 main.py
 
-    # Skapar parsern som läser vad användaren skriver efter python3 main.py
-    parser = argparse.ArgumentParser(description="Serverinventory tool")
+    parser.add_argument("--lista", action="store_true", help="Visa alla servrar") # ett argument som gör att man kan skriva --lista och då visas alla servrar.
 
-    # --lista är av eller på: skriver man den visas servrarna
-    parser.add_argument("--lista", action="store_true", help="Visa alla servrar")
+    parser.add_argument("--miljo", help="Visa bara servrar i en miljö (dev, test eller prod)") # skapar ett argument där man kan skriva --miljo och då visas bara servrar i den miljön.
 
-    # --miljo tar ett värde och är valfritt
-    parser.add_argument("--miljo", help="Visa bara servrar i en miljö (dev, test eller prod)")
+    parser.add_argument("--kontrollera", help="Kontrollera en server med ping, t.ex. web01") # skapar ett argument där man kan skriva --kontrollera och då kontrolleras den vilken server man vill kontrollera.
 
-    # --kontrollera tar ett värde (ett servernamn), samma som --miljo
-    parser.add_argument("--kontrollera", help="Kontrollera en server med ping, t.ex. web01")
+    parser.add_argument("--kontrollera-alla", action="store_true", help="Kontrollera alla servrar med ping") # skapar ett argument där man kan skriva --kontrollera-alla och då kontrolleras alla servrar.
 
-    # --kontrollera-alla är av eller på, som --lista
-    parser.add_argument("--kontrollera-alla", action="store_true", help="Kontrollera alla servrar med ping")
+    parser.add_argument("--export", action="store_true", help="Exportera alla servrar till en CSV-rapport")  # skapar ett argument där man kan skriva --export och då exporteras alla servrar till en CSV-rapport.
 
-    # --export är av eller på, som --lista
-    parser.add_argument("--export", action="store_true", help="Exportera alla servrar till en CSV-rapport")
 
-    args = parser.parse_args()
+    args = parser.parse_args() # läser in argumenten som man skriver efter python3 main.py och sparar dem i args.
 
-    if args.lista:
-        # om man kör programmet med --lista så visas servrarna direkt och menyn körs inte
-        servrar = ladda_servrar()
 
-        # args.miljo är None om användaren inte skrev --miljo. Då hoppar vi över filtreringen.
+    # Om användaren skriver --lista, visas alla servrar och om man skriver --miljo, visas bara servrar i den miljön.
+    if args.lista: 
+        servrar = ladda_servrar() # Hämtas servrarna från filen
+
         if args.miljo:
             servrar = filtrera_miljo(servrar, args.miljo)
 
         visa_servrar(servrar)
 
+
+    # Om användaren skriver --miljo utan --lista, visas bara servrar i den miljön
     elif args.miljo:
-        # om man kör programmet med --miljo så visas servrarna i den miljön direkt och menyn körs inte
         servrar = ladda_servrar()
-        filtrerade_servrar = filtrera_miljo(servrar, args.miljo)
+
+        filtrerade_servrar = filtrera_miljo(servrar, args.miljo) # Filtrerar servrarna i den miljön beroende på vad man skriver in
+
         visa_servrar(filtrerade_servrar)
 
+
+    # Om användaren skriver --kontrollera med ett servernamn, kontrolleras den servern
     elif args.kontrollera:
-        # om man kör programmet med --kontrollera så kontrolleras den angivna servern
         servrar = ladda_servrar()
 
-        # kontrollera_en pingar servern, sparar och ger tillbaka servern (eller None om den inte finns)
-        server = kontrollera_en(servrar, args.kontrollera)
+        server = kontrollera_en(servrar, args.kontrollera) # Kontrollerar servern med ping
 
+        # Om servern inte finns, skrivs ett felmeddelande ut och programmet avslutas med exitkod 1
         if server is None:
-            print(f"Servern {args.kontrollera} finns inte.")
-            sys.exit(1)  # exitkod 1: servern finns inte
+            print(f"Servern {args.kontrollera} finns inte.") 
+            sys.exit(1) #exitkod 1
 
         print(f"{server['namn']}: {server['status']}")
 
-        if server["status"] == "down":
-            sys.exit(1)  # exitkod 1: servern är nere
-        # Kommer vi hit utan sys.exit() blir exitkoden 0
+        if server["status"] == "down": # Om servern är nere, avslutas programmet med exitkod 1
+            sys.exit(1)
 
-    elif args.kontrollera_alla:  # bindestrecket i flaggan blir understreck i koden
-        # om man kör programmet med --kontrollera-alla så pingas alla servrar
+        
+    # Om man skriver --kontrollera_alla, kontrolleras alla servrar och antalet som är nere skrivs ut. Om någon server är nere avslutas programmet med exitkod 1    
+    elif args.kontrollera_alla:
         servrar = ladda_servrar()
 
-        # kontrollera_alla pingar alla, sparar en gång och returnerar antalet som är nere
         antal_nere = kontrollera_alla(servrar)
 
-        # Visar tabellen så att man ser status för varje server
         visa_servrar(servrar)
         print(f"Antal servrar som är nere: {antal_nere}")
 
         if antal_nere > 0:
-            sys.exit(1)  # exitkod 1: minst en server är nere annars blir exitkoden 0
+            sys.exit(1) 
 
+
+    # Om man skriver --export, exporteras alla servrar till en CSV-rapport och sökvägen till filen skrivs ut.
     elif args.export:
-        # om man kör programmet med --export så skapas en CSV-rapport direkt
+
         servrar = ladda_servrar()
 
-        # exportera_csv skriver filen och returnerar sökvägen till den
         sokvag = exportera_csv(servrar)
         print(f"Rapporten har exporterats till {sokvag}")
-        # Inget sys.exit() behövs, så exitkoden blir 0
+    
 
+    # Om användaren inte skriver något argument, körs menyn som vanligt.
     else:
         # Användaren skrev inget så menyn körs
         kor_meny()
 
-
-# Körs bara när filen startas direkt (python3 main.py)
+# programmet startar här.
 if __name__ == "__main__":
     main()
